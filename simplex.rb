@@ -2,8 +2,13 @@ class Fraction
   attr_accessor :numerator, :denominator
 
   def initialize(numerator, denominator)
+    if denominator == 0
+      raise ZeroDivisionError
+      nil
+    end
     @numerator = numerator
     @denominator = denominator
+    self.reduce
   end
 
   def -@
@@ -39,6 +44,9 @@ class Fraction
         self.denominator *= other.denominator
         self.reduce
       when Integer
+        if other == 0
+          return 0
+        end
         self * other.to_fr 
       else
         nil
@@ -46,6 +54,10 @@ class Fraction
   end
 
   def /(other)
+    if other == 0
+      raise ZeroDivisionError
+      nil
+    end
     self * other.to_fr.inverse
   end
 
@@ -95,9 +107,11 @@ class Fraction
   def **(other)
     case other
       when Fraction
+        raise 'Fraction::** suport only Integer'
         nil
       when Integer
         self.numerator **= other
+        self.denominator **= other
        self.reduce 
       else
         nil
@@ -139,6 +153,7 @@ class Fraction
   end
 
 end  
+
 
 class Integer
   def to_fr

@@ -156,13 +156,44 @@ class Simplextest < Minitest::Test
     f1 = Fraction.new(2,3)
     f1 **= 3
     assert_equal 8, f1.numerator
-    assert_equal 3, f1.denominator
+    assert_equal 27, f1.denominator
   end
 
   def test_to_s
     f = Fraction.new(1,2)
     assert_equal '1/2', f.to_s
   end
+
+  def test_denominator_zero
+    assert_raises ZeroDivisionError do
+      f = Fraction.new(1,0)
+    end
+  end
+
+  def test_dived_by_zero
+    assert_raises ZeroDivisionError do
+      f = Fraction.new(1,2)
+      f /= 0
+    end
+  end
+
+  def test_milti_zero
+    f1 = Fraction.new(1,4)
+    i = 0
+    f = f1 * i
+    assert_equal 0, f
+  end
+
+  def test_power_with_fraction
+    f1 = Fraction.new(1,2)
+    f2 = Fraction.new(1,4)
+    assert_raises RuntimeError do
+      f1 ** f2
+    end
+  end
+
+
+
 
 end
 
