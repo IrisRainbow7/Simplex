@@ -2,6 +2,7 @@ require './lib/fraction'
 
 
 class Simplex
+  attr_accessor :table
 
 def initialize(table)
   @table = table
