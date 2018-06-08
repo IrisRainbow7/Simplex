@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require './simplex'
+require './lib/simplex'
 
 class Simplextest < Minitest::Test
   def test_new_fraction
