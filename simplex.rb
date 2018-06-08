@@ -134,6 +134,9 @@ class Fraction
     end
   end
      
+  def to_s
+    "#{numerator}/#{denominator}"
+  end
 
 end  
 

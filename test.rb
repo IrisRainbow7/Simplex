@@ -155,8 +155,13 @@ class Simplextest < Minitest::Test
   def test_power
     f1 = Fraction.new(2,3)
     f1 **= 3
-    assert 8, f1.numerator
-    assert 3, f1.denominator
+    assert_equal 8, f1.numerator
+    assert_equal 3, f1.denominator
+  end
+
+  def test_to_s
+    f = Fraction.new(1,2)
+    assert_equal '1/2', f.to_s
   end
 
 end
