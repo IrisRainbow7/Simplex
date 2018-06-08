@@ -75,6 +75,14 @@ class Simplextest < Minitest::Test
     assert_equal 3, f.denominator
   end
 
+  def test_multiplication_fraction_with_integer
+    f1 = Fraction.new(1,2)
+    i = 3
+    f = f1 * i
+    assert_equal 3, f.numerator
+    assert_equal 2, f.denominator
+  end
+
   def test_inverse
     f = Fraction.new(2,3)
     f.inverse
@@ -82,7 +90,7 @@ class Simplextest < Minitest::Test
     assert_equal 2, f.denominator
   end
 
-  def test_divede
+  def test_divide
     f1 = Fraction.new(1,4)
     f2 = Fraction.new(2,3)
     f = f1 / f2
@@ -150,8 +158,6 @@ class Simplextest < Minitest::Test
     assert 8, f1.numerator
     assert 3, f1.denominator
   end
-
-
 
 end
 

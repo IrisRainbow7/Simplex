@@ -1,11 +1,9 @@
 class Fraction
-  attr_accessor :numerator, :denominator, :numer, :denom
+  attr_accessor :numerator, :denominator
 
   def initialize(numerator, denominator)
     @numerator = numerator
     @denominator = denominator
-    @numer = numerator
-    @denom = denominator
   end
 
   def -@
@@ -41,7 +39,7 @@ class Fraction
         self.denominator *= other.denominator
         self.reduce
       when Integer
-        self + other.to_fr 
+        self * other.to_fr 
       else
         nil
     end
