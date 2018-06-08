@@ -192,6 +192,18 @@ class Simplextest < Minitest::Test
     end
   end
 
+def test_to_i
+    f1 = Fraction.new(2,1)
+    f2 = Fraction.new(5,2)
+    assert_equal 2, f1.to_i
+    assert_equal 2, f2.to_i
+end
+
+def test_to_f
+    f1 = Fraction.new(5,2)
+    assert_equal 2.5, f1.to_f
+end
+
 
 
 

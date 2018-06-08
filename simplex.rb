@@ -149,8 +149,18 @@ class Fraction
   end
      
   def to_s
-    "#{numerator}/#{denominator}"
+    "#{self.numerator}/#{self.denominator}"
   end
+
+  def to_i
+    (self.numerator / self.denominator).to_i 
+  end
+
+  def to_f
+    (self.numerator.to_f / self.denominator.to_f).to_f 
+  end
+
+  
 
 end  
 
