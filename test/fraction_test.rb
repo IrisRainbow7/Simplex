@@ -1,7 +1,7 @@
 require 'minitest/autorun'
-require './lib/simplex'
+require './lib/fraction'
 
-class Simplextest < Minitest::Test
+class Fractiontest < Minitest::Test
   def test_new_fraction
     assert Fraction.new(1,1)
   end
