@@ -6,6 +6,9 @@ class Fraction
       raise ZeroDivisionError
       nil
     end
+    if numerator == 0
+      return 0
+    end
     @numerator = numerator
     @denominator = denominator
     self.reduce
@@ -80,6 +83,9 @@ class Fraction
           nil
         end
       when Integer
+        if other==0
+          return self.numerator
+        end
         self <=> other.to_fr
       else
         nil
