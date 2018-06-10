@@ -7,7 +7,7 @@ class Fraction
       nil
     end
     if numerator == 0
-      return 0
+      denominator = 0
     end
     @numerator = numerator
     @denominator = denominator
@@ -126,6 +126,9 @@ class Fraction
 
 
   def reduce
+    if self.numerator == 0 and self.denominator == 0
+      return 0
+    end
     gcd = self.numerator.gcd(self.denominator)
     self.numerator /= gcd
     self.denominator /= gcd
