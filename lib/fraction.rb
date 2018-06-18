@@ -99,6 +99,12 @@ class Fraction
 
   def >(other)
     answer = Fraction.new(self.numerator, self.denominator)
+    if self.zero?
+      return (other.negative? ? true : false)
+    end
+    if other.zero?
+      return (self.negative? ? false : true)
+    end
     answer, other = answer.complete(other)
     answer.numerator > other.numerator
   end
@@ -109,7 +115,13 @@ class Fraction
 
   def <(other)
     answer = Fraction.new(self.numerator, self.denominator)
-    answer, other = answer.complete(other)
+    if self.zero?
+      return (other.negative? ? false : true)
+    end
+    if other.zero?
+      return (self.negative? ? true : false)
+    end
+  answer, other = answer.complete(other)
     answer.numerator < other.numerator
   end
 
@@ -206,6 +218,10 @@ class Fraction
 
   def zero?
     (self.numerator == 0 and self.denominator == 0)
+  end
+
+  def negative?
+    self.numerator < 0
   end
 
 

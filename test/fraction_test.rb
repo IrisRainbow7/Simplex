@@ -247,5 +247,22 @@ class Fractiontest < Minitest::Test
     assert_equal 0, f.to_i
     assert_equal 0.0, f.to_f
   end
+
+  def test_negative?
+    f = Fraction.new(1,2)
+    refute f.negative?
+    f *= -1
+    assert f.negative?
+  end
+
+  def test_compare_with_zero
+    f1 = Fraction.new(0,0)
+    f2 = Fraction.new(1,2)
+    assert f1 < f2
+    assert f1 > -f2
+    assert f2 > f1
+  end
+
+
 end
 
