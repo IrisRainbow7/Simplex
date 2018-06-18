@@ -19,6 +19,11 @@ class Fraction
 
   def +(other)
     answer = Fraction.new(self.numerator, self.denominator)
+    if self.zero?
+      return other
+    elsif other.zero?
+      return answer
+    end
     case other
       when Fraction
         if answer.denominator == other.denominator
