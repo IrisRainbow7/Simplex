@@ -2,6 +2,9 @@ class Fraction
   attr_accessor :numerator, :denominator
 
   def initialize(numerator, denominator)
+    if !numerator.instance_of?(Integer) or !denominator.instance_of?(Integer)
+      raise "require both Integet of numerator and denominator"
+    end
     if numerator == 0
       denominator = 0
     elsif denominator == 0
