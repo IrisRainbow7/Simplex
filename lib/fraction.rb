@@ -202,7 +202,13 @@ class Fraction
   end
 
   def to_s
+    if self.numerator == 0 and self.denominator == 0
+      "0"
+    elsif self.numerator == self.denominator
+      "1"
+    else
     "#{self.numerator}/#{self.denominator}"
+    end
   end
 
   def to_i
