@@ -22,12 +22,17 @@ class Simplex
 
   end
 
-  def phase2()
-
+  def phase2
+    until self.table[1][2..-1].map(&:to_fr).all?{|element| element.zero? or element.negative?}
+      self.select_max_from_all
+      self.select_min_ratio_from_base
+      self.swap
+      #pp self.table.map{|row| row.map(&:to_s)}
+    end
   end
 
   def select_max_from_all
-    self.n = self.table[1][2..-1].index(self.table[1][2..-1].max)+2
+    self.n = self.table[1][2..-1].index(self.table[1][2..-1].map(&:to_fr).max)+2
   end
 
   def select_min_ratio_from_base
@@ -63,7 +68,11 @@ class Simplex
     end
     ratio = self.table[one_positon][self.n]
     1.upto(@table_size_x-1) do |j|
-      tmp_table[one_positon][j] =  Fraction.new(self.table[one_positon][j],ratio)
+      if ratio.instance_of?(Integer)
+        tmp_table[one_positon][j] =  Fraction.new(self.table[one_positon][j],ratio) 
+      else
+        tmp_table[one_positon][j] =  ratio.inverse * self.table[one_positon][j]
+      end
     end
     1.upto(@table_size_y-1) do |i|
       next if i == one_positon
@@ -84,9 +93,7 @@ if __FILE__ == $0
                 ['y1', 2, 1, 2, 1, 0, 0],
                 ['y2', 19, 12, 18, 0, 1, 0],
                 ['y3',7, 6, 4, 0, 0, 1]]
-  s = Simplex.new(input_data)
-  s.select_max_from_all
-  s.select_min_ratio_from_base
-  s.swap
+  s = Simplex.new(input_data.map {|row| row.map{|element| element.instance_of?(Integer) ? element.to_fr : element }})
+  s.phase2
   pp s.table.map{|row| row.map(&:to_s)}
 end

@@ -63,4 +63,13 @@ class Simplextest < Minitest::Test
     assert_equal @expected_data, @s.table
   end
 
+  def test_phase2
+    @expected_data = [["基底", "値", "x1", "x2", "y1", "y2", "y3"],
+                      ["z", "-29/6", "0", "0", "0", "-1/30", "-3/5"],
+                      ["y1", "1/6", "0", "0", "1", "-2/15", "1/10"],
+                      ["x2", "1/2", "0", "1", "0", "1/10", "-1/5"],
+                      ["x1", "5/6", "1", "0", "0", "-1/15", "3/10"]]
+    @s.phase2
+    assert_equal @expected_data, @s.table.map{|row| row.map(&:to_s)} 
+  end
 end
