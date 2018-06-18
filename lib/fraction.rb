@@ -20,17 +20,18 @@ class Fraction
   end
 
   def +(other)
+    answer = Fraction.new(self.numerator, self.denominator)
     case other
       when Fraction
-        if self.denominator == other.denominator
-          self.numerator += other.numerator
+        if answer.denominator == other.denominator
+          answer.numerator += other.numerator
         else
-          self.numerator, self.denominator, other = Fraction.complete(self, other)
-          self.numerator += other.numerator
+          answer.numerator, answer.denominator, other = Fraction.complete(answer, other)
+          answer.numerator += other.numerator
         end
-        self.reduce
+        answer.reduce
       when Integer
-        self + other.to_fr 
+        answer + other.to_fr
       else
         nil
     end
@@ -41,16 +42,17 @@ class Fraction
   end
 
   def *(other)
+    answer = Fraction.new(self.numerator, self.denominator)
     case other
       when Fraction
-        self.numerator *= other.numerator
-        self.denominator *= other.denominator
-        self.reduce
+        answer.numerator *= other.numerator
+        answer.denominator *= other.denominator
+        answer.reduce
       when Integer
         if other == 0
           return 0
         end
-        self * other.to_fr 
+        answer * other.to_fr
       else
         nil
     end
@@ -111,14 +113,15 @@ class Fraction
   end
 
   def **(other)
+    answer = Fraction.new(self.numerator, self.denominator)
     case other
       when Fraction
         raise 'Fraction::** suport only Integer'
         nil
       when Integer
-        self.numerator **= other
-        self.denominator **= other
-       self.reduce 
+        answer.numerator **= other
+        answer.denominator **= other
+        answer.reduce
       else
         nil
     end
@@ -136,10 +139,9 @@ class Fraction
   end
 
   def inverse
-    self.numerator, self.denominator = self.denominator, self.numerator
-    self
+    answer = Fraction.new(self.denominator, self.numerator)
   end
-  
+
   def to_fr
     self
   end
@@ -156,22 +158,22 @@ class Fraction
       complete(a.to_fr, b.to_fr)
     end
   end
-     
+
   def to_s
     "#{self.numerator}/#{self.denominator}"
   end
 
   def to_i
-    (self.numerator / self.denominator).to_i 
+    (self.numerator / self.denominator).to_i
   end
 
   def to_f
-    (self.numerator.to_f / self.denominator.to_f).to_f 
+    (self.numerator.to_f / self.denominator.to_f).to_f
   end
 
-  
 
-end  
+
+end
 
 
 class Integer
