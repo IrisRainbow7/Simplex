@@ -24,7 +24,7 @@ class Fraction
         if answer.denominator == other.denominator
           answer.numerator += other.numerator
         else
-          answer.numerator, answer.denominator, other = Fraction.complete(answer, other)
+          answer, other = answer.complete(other)
           answer.numerator += other.numerator
         end
         answer.reduce
@@ -93,8 +93,9 @@ class Fraction
   end
 
   def >(other)
-    self.numerator, self.denominator, other = Fraction.complete(self, other)
-    self.numerator > other.numerator
+    answer = Fraction.new(self.numerator, self.denominator)
+    answer, other = answer.complete(other)
+    answer.numerator > other.numerator
   end
 
   def >=(other)
@@ -102,8 +103,9 @@ class Fraction
   end
 
   def <(other)
-    self.numerator, self.denominator, other = Fraction.complete(self, other)
-    self.numerator < other.numerator
+    answer = Fraction.new(self.numerator, self.denominator)
+    answer, other = answer.complete(other)
+    answer.numerator < other.numerator
   end
 
   def <=(other)
@@ -161,16 +163,21 @@ class Fraction
     self
   end
 
-  def self.complete(a,b)
-    if a.instance_of?(Fraction) and b.instance_of?(Fraction)
-      lcm = a.denominator.lcm(b.denominator)
-      a.numerator *= lcm/a.denominator
-      b.numerator *= lcm/b.denominator
-      a.denominator = lcm
-      b.denominator = lcm
-      return a.numerator, a.denominator, b
-    elsif (a.instance_of?(Fraction) or a.instance_of?(Integer)) and (b.instance_of?(Fraction) or b.instance_of?(Integer))
-      complete(a.to_fr, b.to_fr)
+  def complete(other)
+    case other
+      when Fraction
+        answer1 = Fraction.new(self.numerator, self.denominator)
+        answer2 = Fraction.new(other.numerator, other.denominator)
+        lcm = answer1.denominator.lcm(answer2.denominator)
+        answer1.numerator *= lcm/answer1.denominator
+        answer2.numerator *= lcm/answer2.denominator
+        answer1.denominator = lcm
+        answer2.denominator = lcm
+        return answer1, answer2
+     when Integer
+        self.complete(other.to_fr)
+      else
+        nil
     end
   end
 

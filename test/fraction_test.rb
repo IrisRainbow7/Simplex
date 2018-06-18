@@ -120,11 +120,11 @@ class Fractiontest < Minitest::Test
   def test_complete
     f1 = Fraction.new(1,2)
     f2 = Fraction.new(1,3)
-    f1.numerator, f1.denominator, f2 = Fraction.complete(f1, f2)
-    assert_equal 3, f1.numerator
-    assert_equal 6, f1.denominator
-    assert_equal 2, f2.numerator
-    assert_equal 6, f2.denominator
+    f1_completed, f2_completed = f1.complete(f2)
+    assert_equal 3, f1_completed.numerator
+    assert_equal 6, f1_completed.denominator
+    assert_equal 2, f2_completed.numerator
+    assert_equal 6, f2_completed.denominator
   end
 
   def test_compare_true
