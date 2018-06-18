@@ -236,6 +236,16 @@ class Fractiontest < Minitest::Test
     assert_equal 2, f.denominator
   end
 
+  def test_zero_fraction
+    assert f = Fraction.new(0,0)
+    assert_equal 0, f.numerator
+    assert_equal 0, f.denominator
+  end
 
+  def test_zero_to
+    f = Fraction.new(0,0)
+    assert_equal 0, f.to_i
+    assert_equal 0.0, f.to_f
+  end
 end
 

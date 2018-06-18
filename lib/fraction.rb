@@ -2,12 +2,11 @@ class Fraction
   attr_accessor :numerator, :denominator
 
   def initialize(numerator, denominator)
-    if denominator == 0
-      raise ZeroDivisionError
-      nil
-    end
     if numerator == 0
       denominator = 0
+    elsif denominator == 0
+      raise ZeroDivisionError
+      nil
     end
     @numerator = numerator
     @denominator = denominator
@@ -180,13 +179,22 @@ class Fraction
   end
 
   def to_i
+    if self.zero?
+      return 0
+    end
     (self.numerator / self.denominator).to_i
   end
 
   def to_f
+    if self.zero?
+      return 0
+    end
     (self.numerator.to_f / self.denominator.to_f).to_f
   end
 
+  def zero?
+    (self.numerator == 0 and self.denominator == 0)
+  end
 
 
 end
