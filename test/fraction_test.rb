@@ -13,7 +13,7 @@ class Fractiontest < Minitest::Test
     assert_equal 2, f.numerator
     assert_equal 3, f.denominator
   end
-   
+
   def test_add_fraction_different_denominator
     f1 = Fraction.new(1,2)
     f2 = Fraction.new(1,3)
@@ -30,7 +30,7 @@ class Fractiontest < Minitest::Test
 
   def test_add_fraction_different_denominator
     f1 = Fraction.new(1,2)
-    i = 1 
+    i = 1
     f = f1 + i
     assert_equal 3, f.numerator
     assert_equal 2, f.denominator
@@ -83,11 +83,18 @@ class Fractiontest < Minitest::Test
     assert_equal 2, f.denominator
   end
 
-  def test_inverse
+  def test_inverse!
     f = Fraction.new(2,3)
-    f.inverse
+    f.inverse!
     assert_equal 3, f.numerator
     assert_equal 2, f.denominator
+  end
+
+  def test_inverse
+    f = Fraction.new(2,3)
+    f2 = f.inverse
+    assert_equal 3, f2.numerator
+    assert_equal 2, f2.denominator
   end
 
   def test_divide
@@ -97,7 +104,7 @@ class Fractiontest < Minitest::Test
     assert_equal 3, f.numerator
     assert_equal 8, f.denominator
   end
-   
+
   def test_compare_same
     f1 = Fraction.new(1,2)
     f2 = Fraction.new(1,2)
@@ -192,19 +199,42 @@ class Fractiontest < Minitest::Test
     end
   end
 
-def test_to_i
+  def test_to_i
     f1 = Fraction.new(2,1)
     f2 = Fraction.new(5,2)
     assert_equal 2, f1.to_i
     assert_equal 2, f2.to_i
-end
+  end
 
-def test_to_f
+  def test_to_f
     f1 = Fraction.new(5,2)
     assert_equal 2.5, f1.to_f
-end
+  end
 
+  def test_reduce
+    f1 = Fraction.new(2,4)
+    f2 = f1.reduce
+    assert_equal 1, f2.numerator
+    assert_equal 2, f2.denominator
+  end
 
+  def test_reduce!
+    f = Fraction.new(2,4)
+    f.reduce!
+    assert_equal 1, f.numerator
+    assert_equal 2, f.denominator
+  end
+
+  def test_not_destruction
+    f = Fraction.new(1,2)
+    f + 1
+    f - 1
+    f * 1
+    f / 1
+    f ** 2
+    assert_equal 1, f.numerator
+    assert_equal 2, f.denominator
+  end
 
 
 end

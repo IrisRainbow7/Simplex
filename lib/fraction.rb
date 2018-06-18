@@ -11,12 +11,11 @@ class Fraction
     end
     @numerator = numerator
     @denominator = denominator
-    self.reduce
+    self.reduce!
   end
 
   def -@
-    self.numerator = -self.numerator
-    self
+    answer = Fraction.new(-self.numerator, self.denominator)
   end
 
   def +(other)
@@ -129,6 +128,17 @@ class Fraction
 
 
   def reduce
+    answer = Fraction.new(self.numerator, self.denominator)
+    if answer.numerator == 0 and answer.denominator == 0
+      return 0
+    end
+    gcd = answer.numerator.gcd(answer.denominator)
+    answer.numerator /= gcd
+    answer.denominator /= gcd
+    answer
+  end
+
+ def reduce!
     if self.numerator == 0 and self.denominator == 0
       return 0
     end
@@ -136,10 +146,16 @@ class Fraction
     self.numerator /= gcd
     self.denominator /= gcd
     self
-  end
+ end
 
   def inverse
     answer = Fraction.new(self.denominator, self.numerator)
+    answer.reduce
+  end
+
+  def inverse!
+    self.numerator, self.denominator = self.denominator, self.numerator
+    self
   end
 
   def to_fr
