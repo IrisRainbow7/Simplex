@@ -38,7 +38,11 @@ class Simplex
   def select_min_ratio_from_base
     self.m = []
     2.upto(self.table.size-1) do |i|
-      self.m << self.table[i][1].to_f/self.table[i][self.n].to_f
+      if self.table[i][self.n] > 0
+        self.m << self.table[i][1].to_f/self.table[i][self.n].to_f
+      else
+        self.m << Float::INFINITY
+      end
     end
     self.m = self.m.index(self.m.min)+2
   end
