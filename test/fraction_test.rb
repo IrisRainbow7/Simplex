@@ -167,8 +167,12 @@ class Fractiontest < Minitest::Test
   end
 
   def test_to_s
-    f = Fraction.new(1,2)
-    assert_equal '1/2', f.to_s
+    f1 = Fraction.new(1,2)
+    f2 = Fraction.new(0,0)
+    f3 = Fraction.new(5,1)
+    assert_equal '1/2', f1.to_s
+    assert_equal '0', f2.to_s
+    assert_equal '5', f3.to_s
   end
 
   def test_denominator_zero

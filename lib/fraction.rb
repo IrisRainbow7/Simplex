@@ -206,6 +206,8 @@ class Fraction
       "0"
     elsif self.numerator == self.denominator
       "1"
+    elsif self.denominator == 1
+      self.numerator.to_s
     else
     "#{self.numerator}/#{self.denominator}"
     end
