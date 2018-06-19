@@ -38,7 +38,9 @@ class Simplex
   def select_min_ratio_from_base
     self.m = []
     2.upto(self.table.size-1) do |i|
-      if self.table[i][self.n] > 0
+      if self.table[i][0] == 'w'
+        self.m << Float::INFINITY
+      elsif self.table[i][self.n] > 0
         self.m << self.table[i][1].to_f/self.table[i][self.n].to_f
       else
         self.m << Float::INFINITY
@@ -97,7 +99,21 @@ if __FILE__ == $0
                 ['y1', 2, 1, 2, 1, 0, 0],
                 ['y2', 19, 12, 18, 0, 1, 0],
                 ['y3',7, 6, 4, 0, 0, 1]]
-  s = Simplex.new(input_data.map {|row| row.map{|element| element.instance_of?(Integer) ? element.to_fr : element }})
+  input_data2 = [['基底', '値', 'x1', 'x2', 'y1', 'y2', 'y3'],
+                 ['z', 0, 1, 1, 0, 0, 0],
+                 ['y1', 3, 1, 2, 1, 0, 0],
+                 ['y2', 2, 1, 0, 0, 1, 0],
+                 ['y3',1, 0, 1, 0, 0, 1]]
+  input_data3 = [['基底', '値', 'x1', 'x2', 'y1', 'y2'],
+                 ['z', 0, 2, 1, 0, 0],
+                 ['y1', 18, 1, 3, 1, 0],
+                 ['y2', 25, 5, 2, 0, 1]]
+  input_data4 = [['基底', '値', 'x1', 'x2', 'x3', 'x4', 'x5'],
+                 ['z', Fraction.new(219,5), 0, Fraction.new(2,5), 0, 0, Fraction.new(-3,5)],
+                 ['x1', Fraction.new(73,5), 1, Fraction.new(4,5), 0, 0, Fraction.new(-1,5)],
+                 ['x3', Fraction.new(46,5), 0, Fraction.new(3,5), 1, 0, Fraction.new(-2,5)],
+                 ['x4',Fraction.new(12,5), 0, Fraction.new(1,5), 0, 1, Fraction.new(-4,5)]]
+s = Simplex.new(input_data4.map {|row| row.map{|element| element.instance_of?(Integer) ? element.to_fr : element }})
   s.phase2
   pp s.table.map{|row| row.map(&:to_s)}
 end
