@@ -19,8 +19,56 @@ class Simplex
     @m = 0
   end
 
-  def solve()
+  def self.makeTableFromQuestion(questionTable)
+    symbol_index = questionTable[1].index(questionTable[1].find{|element| !element.integer? })
+    table = [['基底', '値']]
+    1.upto(questionTable.size + questionTable[0].size - 3) do |i|
+      table[0] << "x#{i}"
+    end
+    y_index = 1
+    ys = []
+    questionTable[1..-1].each do |row|
+      if row[2] == '>'
+        table[0] << "y#{y_index}"
+        ys << y_index
+        y_index += 1
+      end
+    end
+    table << ['z', 0] + questionTable[0].map{|i| -i}
+    table[1] += [0]*(table[0].size-table[1].size)
+    2.upto(questionTable.size) do |i|
+      table << ["x#{questionTable.size[0]-2+i-1}"] + [questionTable[i-1][-1]] + questionTable[i-1][0..symbol_index-1]
+      if ys.include?(i-1)
+        table[-1][0] = "y#{i-1}"
+      end
+      1.upto(2) do |j|
+        tmp_table = [0]*(y_index-1)
+        if questionTable[i-1][symbol_index] == '<' or j == 2
+          tmp_table[i-2] = 1
+        elsif questionTable[i-1][symbol_index] == '>'
+          tmp_table[i-2] = -1
+        end
+        table[i] += tmp_table
+      end
+    end
+    table
+  end
 
+  def solve
+    if self.needPhase1?
+      self.phase1
+    end
+    self.phase2
+  end
+
+  def needPhase1?
+    tf = false
+    2.upto(self.table.size-1) do |i|
+      if self.table[i][0][0] == 'y'
+        tf = true
+      end
+    end
+    tf
   end
 
   def minimize
