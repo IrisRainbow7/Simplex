@@ -76,15 +76,38 @@ class Simplex
       self.select_max_from_all
       self.select_min_ratio_from_base
       self.swap
-      #pp self.table.map{|row| row.map(&:to_s)}
+      pp self.table.map{|row| row.map(&:to_s)}
     end
   end
 
   def phase1
+    @table_size_y += 1
+    self.table << self.table[1].clone
+    self.table[1][0] = 'w'
+    1.upto(self.table[0].size-1) do |i|
+      self.table[1][i] = 0
+      2.upto(self.table.size-2) do |j|
+        if self.table[j][0][0] == 'y'
+          self.table[1][i] += self.table[j][i]
+        end
+      end
+      if self.table[0][i][0] == 'y'
+        self.table[1][i] += -1
+      end
+    end
     minimize
   end
 
   def phase2
+    p "phase2"
+    self.table[1] = self.table[-1]
+    @table_size_y -= 1
+    @table_size_x -= 3
+    self.table.delete_at(-1)
+    self.table.each.with_index do |row, i|
+      self.table[i] = row[0..-4]
+    end
+    pp self.table.map{|row| row.map(&:to_s)}
     minimize
   end
 
@@ -176,7 +199,16 @@ if __FILE__ == $0
                  ['y2', 14, 3, 2, 0, -1, 1, 0],
                  ['y3', 6, 1, 2, 0, 0, 0, 1],
                  ['z', 0, 2, 3, 0, 0, 0, 0]]
-  s = Simplex.new(input_data5.map {|row| row.map{|element| element.instance_of?(Integer) ? element.to_fr : element }})
-  s.phase2
+#  s = Simplex.new(input_data5.map {|row| row.map{|element| element.instance_of?(Integer) ? element.to_fr : element }})
+#  s.phase2
 #  pp s.table.map{|row| row.map(&:to_s)}
+  questionTable1 = [[3,2,0,0],
+                    [2,1,'>',20],
+                    [4,3,'>',56],
+                    [5,4,'>',73]]
+  t = Simplex.makeTableFromQuestion(questionTable1)
+  pp t
+  tt = Simplex.new(t)
+  tt.solve
+  pp tt.table.map{|row| row.map(&:to_s)}
 end
