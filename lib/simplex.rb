@@ -1,5 +1,10 @@
 require './lib/fraction'
 
+class String
+  def integer?
+    false
+  end
+end
 
 class Simplex
   attr_accessor :table, :n, :m, :size_x, :size_y
