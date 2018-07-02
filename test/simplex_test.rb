@@ -63,13 +63,41 @@ class Simplextest < Minitest::Test
     assert_equal @expected_data, @s.table
   end
 
-  def test_phase2
+  def test_phase2_only
     @expected_data = [["基底", "値", "x1", "x2", "y1", "y2", "y3"],
                       ["z", "-29/6", "0", "0", "0", "-1/30", "-3/5"],
                       ["y1", "1/6", "0", "0", "1", "-2/15", "1/10"],
                       ["x2", "1/2", "0", "1", "0", "1/10", "-1/5"],
                       ["x1", "5/6", "1", "0", "0", "-1/15", "3/10"]]
-    @s.phase2
-    assert_equal @expected_data, @s.table.map{|row| row.map(&:to_s)} 
+    @s.phase2(mode="phase2only")
+    assert_equal @expected_data, @s.table.map{|row| row.map(&:to_s)}
   end
+
+  def test_make_table_from_question
+    @question_data = [[-1,-1,0,0],
+                       [1,2,'<',3],
+                       [1,0,'<',2],
+                       [0,1,'<',1]]
+    @expected_data = [["基底", "値", "x1", "x2", "x3", "x4", "x5"],
+                      ["z", 0, 1, 1, 0, 0, 0],
+                      ["x3", 3, 1, 2, 1, 0, 0],
+                      ["x4", 2, 1, 0 ,0, 1, 0],
+                      ["x5", 1, 0, 1, 0 ,0, 1]]
+    assert_equal @expected_data, Simplex.makeTableFromQuestion(@question_data)
+  end
+
+  def test_solve
+    @input_data = [[3,2,0,0],
+                   [2,1,'>',20],
+                   [4,3,'>',56],
+                   [5,4,'>',73]]
+    @expected_data =[["基底", "値", "x1", "x2", "x3", "x4", "x5"],
+                     ["z", "38", "0", "0", "-1/2", "-1/2", "0"],
+                     ["x1", "2", "1", "0", "-3/2", "1/2", "0"],
+                     ["x5", "1", "0", "0", "1/2", "-3/2", "1"],
+                     ["x2", "16", "0", "1", "2", "-1", "0"]] 
+    assert_equal @expected_data, Simplex.new(Simplex.makeTableFromQuestion(@input_data)).solve.table.map{|row| row.map(&:to_s)}
+  end
+
+
 end

@@ -34,14 +34,20 @@ class Simplex
         y_index += 1
       end
     end
+    if y_index == 1
+      y_index = questionTable.size
+    end
     table << ['z', 0] + questionTable[0].map{|i| -i}
     table[1] += [0]*(table[0].size-table[1].size)
     2.upto(questionTable.size) do |i|
-      table << ["x#{questionTable.size[0]-2+i-1}"] + [questionTable[i-1][-1]] + questionTable[i-1][0..symbol_index-1]
+      table << ["x#{questionTable.size-2+i-1}"] + [questionTable[i-1][-1]] + questionTable[i-1][0..symbol_index-1]
       if ys.include?(i-1)
         table[-1][0] = "y#{i-1}"
       end
       1.upto(2) do |j|
+        if ys.empty? and j == 2
+          break
+        end
         tmp_table = [0]*(y_index-1)
         if questionTable[i-1][symbol_index] == '<' or j == 2
           tmp_table[i-2] = 1
@@ -57,8 +63,11 @@ class Simplex
   def solve
     if self.needPhase1?
       self.phase1
+      self.phase2
+    else
+      self.phase2(mode="phase2only")
     end
-    self.phase2
+    self
   end
 
   def needPhase1?
@@ -76,7 +85,7 @@ class Simplex
       self.select_max_from_all
       self.select_min_ratio_from_base
       self.swap
-      pp self.table.map{|row| row.map(&:to_s)}
+      #pp self.table.map{|row| row.map(&:to_s)}
     end
   end
 
@@ -98,16 +107,16 @@ class Simplex
     minimize
   end
 
-  def phase2
-    p "phase2"
-    self.table[1] = self.table[-1]
-    @table_size_y -= 1
-    @table_size_x -= 3
-    self.table.delete_at(-1)
-    self.table.each.with_index do |row, i|
-      self.table[i] = row[0..-4]
+  def phase2(mode="")
+    if mode == ""
+      self.table[1] = self.table[-1]
+      @table_size_y -= 1
+      @table_size_x -= 3
+      self.table.delete_at(-1)
+      self.table.each.with_index do |row, i|
+        self.table[i] = row[0..-4]
+      end
     end
-    pp self.table.map{|row| row.map(&:to_s)}
     minimize
   end
 
@@ -207,7 +216,7 @@ if __FILE__ == $0
                     [4,3,'>',56],
                     [5,4,'>',73]]
   t = Simplex.makeTableFromQuestion(questionTable1)
-  pp t
+#  pp t
   tt = Simplex.new(t)
   tt.solve
   pp tt.table.map{|row| row.map(&:to_s)}
