@@ -7,7 +7,7 @@ class String
 end
 
 class Simplex
-  attr_accessor :table, :n, :m, :size_x, :size_y
+  attr_accessor :table, :n, :m, :size_x, :size_y, :trace
 
   def initialize(table)
     @table = table
@@ -17,9 +17,10 @@ class Simplex
     @size_x = @table_size_x - @size_y - 2
     @n = 0
     @m = 0
+    @trace = false
   end
 
-  def self.makeTableFromQuestion(questionTable)
+  def self.makeTableFromQuestion(questionTable, trace=false)
     symbol_index = questionTable[1].index(questionTable[1].find{|element| !element.integer? })
     table = [['基底', '値']]
     1.upto(questionTable.size + questionTable[0].size - 3) do |i|
@@ -57,10 +58,16 @@ class Simplex
         table[i] += tmp_table
       end
     end
+    if trace
+      pp table
+    end
     table
   end
 
-  def solve
+  def solve(trace=false)
+    if trace
+      self.trace = true
+    end
     if self.needPhase1?
       self.phase1
       self.phase2
@@ -85,11 +92,14 @@ class Simplex
       self.select_max_from_all
       self.select_min_ratio_from_base
       self.swap
-      #pp self.table.map{|row| row.map(&:to_s)}
+      if self.trace
+        pp self.table.map{|row| row.map(&:to_s)}
+      end
     end
   end
 
   def phase1
+    p "phase1"
     @table_size_y += 1
     self.table << self.table[1].clone
     self.table[1][0] = 'w'
@@ -108,6 +118,7 @@ class Simplex
   end
 
   def phase2(mode="")
+    p "phase2"
     if mode == ""
       self.table[1] = self.table[-1]
       @table_size_y -= 1
