@@ -41,5 +41,4 @@ end
 
 input[0] += [0]*(input[1].size-input[0].size)
 
-
-  pp Simplex.new(Simplex.makeTableFromQuestion(input)).solve.table.map{|row| row.map(&:to_s)}
+  pp Simplex.new(Simplex.makeTableFromQuestion(input,trace=true)).solve(trace=true).table.map{|row| row.map(&:to_s)}

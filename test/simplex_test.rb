@@ -86,7 +86,7 @@ class Simplextest < Minitest::Test
     assert_equal @expected_data, Simplex.makeTableFromQuestion(@question_data)
   end
 
-  def test_solve
+  def test_solve0
     @input_data = [[3,2,0,0],
                    [2,1,'>',20],
                    [4,3,'>',56],
@@ -95,7 +95,18 @@ class Simplextest < Minitest::Test
                      ["z", "38", "0", "0", "-1/2", "-1/2", "0"],
                      ["x1", "2", "1", "0", "-3/2", "1/2", "0"],
                      ["x5", "1", "0", "0", "1/2", "-3/2", "1"],
-                     ["x2", "16", "0", "1", "2", "-1", "0"]] 
+                     ["x2", "16", "0", "1", "2", "-1", "0"]]
+    assert_equal @expected_data, Simplex.new(Simplex.makeTableFromQuestion(@input_data)).solve.table.map{|row| row.map(&:to_s)}
+  end
+
+  def test_solve1
+    @input_data = [[1,2,5,0,0],
+                   [3,4,1,'>',8],
+                   [1,2,4,'>',9]]
+    @expected_data =[["基底", "値", "x1", "x2", "x3", "x4"],
+                     ["z", "9", "0", "0", "-1", "0"],
+                     ["x2", "9/2", "1/2", "1", "2", "0"],
+                     ["x4", "10", "-1", "0", "7", "1"]]
     assert_equal @expected_data, Simplex.new(Simplex.makeTableFromQuestion(@input_data)).solve.table.map{|row| row.map(&:to_s)}
   end
 

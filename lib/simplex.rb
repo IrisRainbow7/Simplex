@@ -24,12 +24,15 @@ class Simplex
     symbol_index = questionTable[1].index(questionTable[1].find{|element| !element.integer? })
     table = [['基底', '値']]
     1.upto(questionTable.size + questionTable[0].size - 3) do |i|
+      if i > questionTable[0].size-2 and questionTable[i-questionTable[0].size-2][symbol_index] == '='
+        next
+      end
       table[0] << "x#{i}"
     end
     y_index = 1
     ys = []
     questionTable[1..-1].each do |row|
-      if row[2] == '>'
+      if row[symbol_index] == '>' or row[symbol_index] == '='
         table[0] << "y#{y_index}"
         ys << y_index
         y_index += 1
@@ -40,10 +43,11 @@ class Simplex
     end
     table << ['z', 0] + questionTable[0].map{|i| -i}
     table[1] += [0]*(table[0].size-table[1].size)
+    yss = ys.clone
     2.upto(questionTable.size) do |i|
       table << ["x#{questionTable.size-2+i-1}"] + [questionTable[i-1][-1]] + questionTable[i-1][0..symbol_index-1]
-      if ys.include?(i-1)
-        table[-1][0] = "y#{i-1}"
+      if questionTable[i-1][symbol_index] == '>' or questionTable[i-1][symbol_index] == '='
+        table[-1][0] = "y#{yss.shift}"
       end
       1.upto(2) do |j|
         if ys.empty? and j == 2
