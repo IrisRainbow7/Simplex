@@ -11,20 +11,32 @@ end
 
 input = []
 
-#p "式の数と変数の数を入力してください(スペース区切り)"
-#input << gets.split.map(&:to_i)
-#input[0] += [0]*(input[0][1]+2-input[0].size)
-
-p "最小化する式の係数を入力してください"
-input << gets.split.map(&:to_i)
-
-loop do
-  p "制約条件の式を入力してください(end入力で終了)"
-  input_row = gets.chomp
-  if input_row == 'end'
-    break
+if !ARGV.empty?
+  File.open(ARGV[0], "r:utf-8" ) do |f|
+    input << f.gets.split.map(&:to_i)
+    loop do
+      input_row = f.gets.chomp
+      if input_row == 'end'
+        break
+      end
+      input << input_row.split.map{|element| element.symbol? ? element : element.to_i}
+    end
   end
-  input << input_row.split.map{|element| element.symbol? ? element : element.to_i}
+else
+
+
+  p "最小化する式の係数を入力してください"
+  input << gets.split.map(&:to_i)
+
+  loop do
+    p "制約条件の式を入力してください(end入力で終了)"
+    input_row = gets.chomp
+    if input_row == 'end'
+      break
+    end
+    input << input_row.split.map{|element| element.symbol? ? element : element.to_i}
+  end
+
 end
 
 input[0] += [0]*(input[1].size-input[0].size)
